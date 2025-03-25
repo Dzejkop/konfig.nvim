@@ -39,6 +39,8 @@ local function load_local_config()
 	local cwd = vim.fn.getcwd()
 	local local_config_path = cwd .. "/.nvim"
 
+	load_cache()
+
 	if vim.loop.fs_stat(local_config_path) and prompt_for_permission(cwd) then
 		-- Load all Lua files from the local config directory.
 		local lua_files = vim.fn.glob(local_config_path .. "/*.lua", false, true)
@@ -63,8 +65,6 @@ M.config = config
 ---@param opts Config?
 M.setup = function(opts)
 	M.config = vim.tbl_deep_extend("force", M.config, opts or {})
-
-	load_cache()
 
 	vim.api.nvim_create_autocmd({ "UiEnter" }, {
 		callback = load_local_config,
