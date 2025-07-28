@@ -29,7 +29,7 @@ local function prompt_for_permission(cwd)
 	end
 
 	local choice = vim.fn.input("Load local config from " .. cwd .. "? (y/n): ")
-	local allow = choice:lower() == "y"
+	local allow = choice:lower():sub(1, 1) == "y"
 	cache[cwd] = allow
 	save_cache()
 	return allow
