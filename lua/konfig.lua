@@ -72,7 +72,21 @@ M.setup = function(opts)
 
 	vim.api.nvim_create_user_command("KonfigReload", function()
 		load_local_config()
-	end, {})
+	end, { desc = "Reloads the local configuration" })
+
+	vim.api.nvim_create_user_command("KonfigAllow", function()
+		load_cache()
+		local cwd = vim.fn.getcwd()
+		cache[cwd] = true
+		save_cache()
+	end, { desc = "Explicitly allows loading configuration in this directory" })
+
+	vim.api.nvim_create_user_command("KonfigDisallow", function()
+		load_cache()
+		local cwd = vim.fn.getcwd()
+		cache[cwd] = false
+		save_cache()
+	end, { desc = "Explicitly disallows loading configuration in this directory" })
 end
 
 M.load_local_config = load_local_config
